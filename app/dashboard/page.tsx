@@ -11,19 +11,8 @@ const iconMap: Record<string, any> = {
   Other: Globe,
 }
 
-const mockAssets = [
-  { id: 1, type: 'Email', label: 'Gmail - Personal', assignedTo: 'Sarah (Wife)', disposal: 'Transfer', icon: Mail, notes: 'Email: johnenoch@gmail.com\nPassword: MyP@ss2024\nRecovery email: sarah@example.com' },
-  { id: 2, type: 'Bank', label: 'GTBank Account', assignedTo: 'Sarah (Wife)', disposal: 'Transfer', icon: Building, notes: 'Account Number: 0123456789\nBVN: 12345678901\nOnline banking PIN: 4521\nBranch: Victoria Island Lagos' },
-  { id: 3, type: 'Crypto', label: 'Binance Wallet', assignedTo: 'David (Son)', disposal: 'Transfer', icon: Bitcoin, notes: 'Seed phrase: apple mango sunset river cloud bridge fire ocean moon star light peace\nBinance login: john@gmail.com\nPassword: Crypto@2024\n2FA backup code: 8823-XXXX' },
-  { id: 4, type: 'Streaming', label: 'Netflix', assignedTo: 'Nobody', disposal: 'Delete', icon: Tv, notes: 'Email: johnenoch@gmail.com\nPassword: Netflix2024\nPlease cancel this subscription.' },
-  { id: 5, type: 'Social', label: 'LinkedIn Profile', assignedTo: 'Nobody', disposal: 'Memorialize', icon: Globe, notes: 'Please memorialize this account. Contact LinkedIn support with death certificate.' },
-]
-
-const mockBeneficiaries = [
-  { id: 1, name: 'Sarah Enoch', email: 'sarah@example.com', relationship: 'Wife', assets: ['Gmail - Personal', 'GTBank Account'] },
-  { id: 2, name: 'David Enoch', email: 'david@example.com', relationship: 'Son', assets: ['Binance Wallet'] },
-]
-
+const mockAssets: any[] = []
+const mockBeneficiaries: any[] = []
 const mockVerifiers: any[] = []
 
 const disposalColors: Record<string, string> = {
@@ -56,6 +45,7 @@ export default function Dashboard() {
   const [editingWishes, setEditingWishes] = useState(false)
   const [userName, setUserName] = useState('John')
   const [toast, setToast] = useState('')
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const name = localStorage.getItem('av_name')
@@ -75,6 +65,7 @@ export default function Dashboard() {
     if (data.assets) setAssets(data.assets.map((a: any) => ({
       ...a, icon: iconMap[a.asset_type] || Globe
     })))
+    setLoading(false)
   }
 
   async function fetchBeneficiaries(userId: string) {
@@ -321,11 +312,22 @@ export default function Dashboard() {
               <div className="stat"><div className="num">{assets.filter(a => a.assignedTo !== 'Nobody').length}</div><div className="lbl">Assigned</div></div>
               <div className="stat"><div className="num">{assets.filter(a => a.assignedTo === 'Nobody').length}</div><div className="lbl">Unassigned</div></div>
             </div>
-            <div className="section-title">All Assets</div>
-            <div className="asset-list">
-              {assets.map(asset => (
-                <div className="asset" key={asset.id}>
-                  <div className="asset-top">
+            {loading ? (
+              <div style={{textAlign:'center', padding:'40px', color:'#6b6058', fontSize:'14px'}}>
+                Loading your vault...
+              </div>
+            ) : (
+              <>
+                <div className="section-title">All Assets</div>
+                <div className="asset-list">
+                  {assets.length === 0 && (
+                    <div style={{textAlign:'center', padding:'40px', color:'#4a4540', fontSize:'14px'}}>
+                      No assets yet. Click "Add Asset" to get started.
+                    </div>
+                  )}
+                  {assets.map(asset => (
+                    <div className="asset" key={asset.id}>
+                      <div className="asset-top">
                     <div className="asset-icon"><asset.icon size={18} /></div>
                     <div className="asset-info">
                       <div className="name">{asset.label}</div>
