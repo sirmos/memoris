@@ -1,98 +1,109 @@
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { ShieldCheck, Heart, Users, ArrowRight } from 'lucide-react'
+'use client'
+import { useEffect, useState } from 'react'
+import { ShieldCheck, Folder, Heart, ArrowRight, Lock } from 'lucide-react'
 
 export default function LandingPage() {
+  const [loggedIn, setLoggedIn] = useState(false)
+
+  useEffect(() => {
+    setLoggedIn(!!localStorage.getItem('av_user'))
+  }, [])
+
   return (
-    <main className="min-h-svh bg-background text-foreground">
-      <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="flex size-8 items-center justify-center rounded-full bg-primary text-primary-foreground">
-            <ShieldCheck className="size-4" />
-          </span>
-          <span className="font-heading text-xl font-medium tracking-tight">
-            AfterVault
-          </span>
-        </Link>
-        <Button
-          variant="ghost"
-          className="rounded-full"
-          nativeButton={false}
-          render={<Link href="/dashboard">Sign in</Link>}
-        />
-      </header>
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Inter:wght@400;500;600&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0a0908; font-family: 'Inter', -apple-system, sans-serif; }
+        .page { min-height: 100vh; background: #0a0908; color: #F5F1EA; }
+        .nav { max-width: 1200px; margin: 0 auto; padding: 18px 40px; display: flex; align-items: center; justify-content: space-between; }
+        .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #F5F1EA; font-size: 16px; font-weight: 600; }
+        .logo-icon { width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid #C9A86A; display: flex; align-items: center; justify-content: center; color: #C9A86A; }
+        .nav-links { display: flex; gap: 32px; list-style: none; }
+        .nav-links a { color: #9a8e80; text-decoration: none; font-size: 14px; }
+        .nav-links a:hover { color: #F5F1EA; }
+        .nav-right { display: flex; align-items: center; gap: 20px; }
+        .signin { color: #9a8e80; text-decoration: none; font-size: 14px; }
+        .nav-cta { background: #C9A86A; color: #0a0908; padding: 9px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none; }
+        .dashboard-btn { background: #C9A86A; color: #0a0908; padding: 9px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; text-decoration: none; }
+        .hero { max-width: 780px; margin: 0 auto; padding: 52px 40px; text-align: center; }
+        .badge { display: inline-flex; align-items: center; gap: 8px; border: 1px solid #3a3328; color: #C9A86A; padding: 7px 18px; border-radius: 50px; font-size: 13px; margin-bottom: 32px; }
+        .hero h1 { font-family: 'Playfair Display', Georgia, serif; font-size: 72px; font-weight: 700; line-height: 1.08; color: #F5F1EA; letter-spacing: -2px; }
+        .hero h1 .gold { color: #C9A86A; font-style: italic; }
+        .hero p { margin-top: 22px; font-size: 16px; color: #b5a898; line-height: 1.75; }
+        .hero-btns { margin-top: 32px; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+        .cta-btn { display: inline-flex; align-items: center; gap: 10px; background: transparent; color: #C9A86A; border: 1.5px solid #C9A86A; padding: 13px 32px; border-radius: 50px; font-size: 15px; font-weight: 500; text-decoration: none; }
+        .cta-sub { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #8a7e72; }
+        .cards { max-width: 1100px; margin: 0 auto; padding: 8px 40px 80px; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+        .card { background: #141210; border: 1px solid #2e2820; border-radius: 14px; padding: 28px 26px; }
+        .card-icon { width: 44px; height: 44px; border-radius: 50%; border: 1px solid #3a3328; display: flex; align-items: center; justify-content: center; color: #C9A86A; margin-bottom: 20px; }
+        .card h3 { font-size: 15px; font-weight: 600; color: #F5F1EA; margin-bottom: 10px; }
+        .card p { font-size: 13px; color: #b5a898; line-height: 1.65; }
+        .footer { border-top: 1px solid #1e1a16; }
+        .footer-inner { max-width: 1200px; margin: 0 auto; padding: 22px 40px; display: flex; justify-content: space-between; font-size: 12px; color: #3a3530; }
+      `}</style>
 
-      <section className="mx-auto flex max-w-3xl flex-col items-center px-6 pt-16 pb-12 text-center md:pt-24">
-        <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-1.5 text-sm text-muted-foreground">
-          <Heart className="size-3.5 text-primary" />
-          Thoughtful end-of-life planning
-        </span>
-        <h1 className="text-balance font-heading text-4xl font-medium leading-tight tracking-tight md:text-6xl md:leading-[1.05]">
-          Your digital life, passed on with care.
-        </h1>
-        <p className="mt-6 max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground">
-          AfterVault helps you organize your accounts, assign them to loved
-          ones, and ensure your wishes are carried out.
-        </p>
-        <div className="mt-9">
-          <Button
-            size="lg"
-            className="rounded-full px-8 text-base shadow-sm"
-            nativeButton={false}
-            render={
-              <Link href="/dashboard">
-                Create your vault
-                <ArrowRight data-icon="inline-end" />
-              </Link>
-            }
-          />
-        </div>
-        <p className="mt-4 text-sm text-muted-foreground">
-          Private, encrypted, and yours to control.
-        </p>
-      </section>
-
-      <section className="mx-auto grid max-w-5xl gap-4 px-6 pb-24 md:grid-cols-3">
-        {[
-          {
-            icon: ShieldCheck,
-            title: 'Organize with intention',
-            body: 'Gather every account in one calm, secure place — from email to banking to crypto.',
-          },
-          {
-            icon: Users,
-            title: 'Assign to loved ones',
-            body: 'Choose who receives what, so the people you trust are never left guessing.',
-          },
-          {
-            icon: Heart,
-            title: 'Honor your wishes',
-            body: 'Note how each account should be handled — transferred, closed, or kept in memory.',
-          },
-        ].map((item) => (
-          <div
-            key={item.title}
-            className="rounded-2xl border border-border bg-card p-6"
-          >
-            <span className="flex size-10 items-center justify-center rounded-full bg-accent text-accent-foreground">
-              <item.icon className="size-5" />
-            </span>
-            <h3 className="mt-4 font-heading text-lg font-medium">
-              {item.title}
-            </h3>
-            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-              {item.body}
-            </p>
+      <div className="page">
+        <nav className="nav">
+          <a href="/" className="logo">
+            <div className="logo-icon"><ShieldCheck size={15} /></div>
+            Memoris
+          </a>
+          <ul className="nav-links">
+            <li><a href="#how">How it works</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#resources">Resources</a></li>
+          </ul>
+          <div className="nav-right">
+            {loggedIn ? (
+              <a href="/dashboard" className="dashboard-btn">Go to my vault →</a>
+            ) : (
+              <>
+                <a href="/signin" className="signin">Sign in</a>
+                <a href="/signup" className="nav-cta">Create your vault</a>
+              </>
+            )}
           </div>
-        ))}
-      </section>
+        </nav>
 
-      <footer className="border-t border-border">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 px-6 py-8 text-sm text-muted-foreground md:flex-row">
-          <span>AfterVault</span>
-          <span>Made with care for life&apos;s hardest moments.</span>
+        <div className="hero">
+          <div className="badge"><Heart size={13} /> Thoughtful end-of-life planning</div>
+          <h1>Your digital life,<br/>passed on <span className="gold">with care.</span></h1>
+          <p>Memoris helps you organize your accounts, assign them to loved ones, and ensure your wishes are carried out.</p>
+          <div className="hero-btns">
+            <a href={loggedIn ? '/dashboard' : '/signup'} className="cta-btn">
+              {loggedIn ? 'Go to my vault' : 'Create your vault'} <ArrowRight size={16} />
+            </a>
+            <span className="cta-sub"><Lock size={13} /> Private, encrypted, and yours to control.</span>
+          </div>
         </div>
-      </footer>
-    </main>
+
+        <div className="cards">
+          <div className="card">
+            <div className="card-icon"><Folder size={22} /></div>
+            <h3>Organize with intention</h3>
+            <p>Gather every account in one calm, secure place, from email to banking to subscriptions.</p>
+          </div>
+          <div className="card">
+            <div className="card-icon"><ShieldCheck size={22} /></div>
+            <h3>Assign to loved ones</h3>
+            <p>Choose who receives what, so the people you trust are never left guessing.</p>
+          </div>
+          <div className="card">
+            <div className="card-icon"><Heart size={22} /></div>
+            <h3>Honor your wishes</h3>
+            <p>Note how each account should be handled, whether transferred, closed, or kept in memory.</p>
+          </div>
+        </div>
+
+        <footer className="footer">
+          <div className="footer-inner">
+            <span>Memoris</span>
+            <span>Made with care for life&apos;s hardest moments.</span>
+          </div>
+        </footer>
+      </div>
+    </>
   )
 }

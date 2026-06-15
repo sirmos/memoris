@@ -1,0 +1,13 @@
+
+> my-project@0.1.0 dev
+> next dev
+
+▲ Next.js 16.2.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://10.0.0.226:3000
+✓ Ready in 726ms
+⚠ Slow filesystem detected. The benchmark took 210ms. If /workspaces/aftervault/.next/dev is a network drive, consider moving it to a local folder.
+See more: https://nextjs.org/docs/app/guides/local-development
+
+○ Compiling / ...
+[?25h
